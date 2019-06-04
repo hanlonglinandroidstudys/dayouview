@@ -1,7 +1,5 @@
 package com.example.diyview.customview.e2egplotview;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Path;
 
 import com.example.diyview.R;
@@ -16,11 +14,12 @@ import java.util.List;
  * @date 2019/5/30 16:11
  */
 public class E2ENode {
-    public static final int TYPE_LEFT=1;
-    public static final int TYPE_RIGHT=2;
-    public static final int TYPE_BOTTOM=3;
+    public static final int TYPE_LEFT = 1;
+    public static final int TYPE_RIGHT = 2;
+    public static final int TYPE_BOTTOM = 3;
+    public static final int TYPE_MAIN = 4;
 
-    int type=TYPE_BOTTOM;
+    int type = TYPE_BOTTOM;
     /**
      * 左上角x
      */
@@ -39,9 +38,9 @@ public class E2ENode {
     int textWidth = 0;
     int textHeight = 0;
     /**
-     * 到父节点的连接线
+     * 到父节点的连接线的点
      */
-    Path path=new Path();
+    Path path = new Path();
 
     E2ENode parent = null;
     List<E2ENode> childs = new ArrayList<>();
@@ -49,22 +48,22 @@ public class E2ENode {
 
 //    E2ENodePoint e2ENodePoint = null;
 
-    public E2ENode(int type,String text) {
-        this.type=type;
+    public E2ENode(int type, String text) {
+        this.type = type;
         this.text = text;
         init();
     }
 
-    public E2ENode(int type,String text, int drawable) {
-        this.type=type;
+    public E2ENode(int type, String text, int drawable) {
+        this.type = type;
         this.text = text;
         this.drawable = drawable;
         init();
     }
 
 
-    public E2ENode(int type,String text, int textSize, int drawable) {
-        this.type=type;
+    public E2ENode(int type, String text, int textSize, int drawable) {
+        this.type = type;
         this.text = text;
         this.textSize = textSize;
         this.drawable = drawable;
@@ -165,10 +164,6 @@ public class E2ENode {
         return textPaddingTop;
     }
 
-    public void setPath(Path path) {
-        this.path = path;
-    }
-
     public Path getPath() {
         return path;
     }
@@ -264,6 +259,7 @@ public class E2ENode {
         }
         return null;
     }
+
 
 
 }

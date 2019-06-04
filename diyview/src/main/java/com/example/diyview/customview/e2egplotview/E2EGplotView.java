@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -133,6 +134,7 @@ public class E2EGplotView extends View {
                 startHorizontalLineY = nodeRegionY + divideLength * (i + 1);
                 canvas.drawLine(startHorizontalLineX, startHorizontalLineY, startHorizontalLineX + horizontalLineLength, startHorizontalLineY, mPaint);
                 E2ENode e2ENode = leftNodes.get(i);
+                // 画节点
                 measureNode(e2ENode);
                 e2ENode.setX(startHorizontalLineX - e2ENode.getWidth());
                 e2ENode.setY(startHorizontalLineY - e2ENode.getHeight() / 2);
@@ -179,6 +181,7 @@ public class E2EGplotView extends View {
                 startHorizontalLineX = mainNode.getX() + mainNode.getWidth() + horizontalLineLength;
                 startHorizontalLineY = nodeRegionY + divideLength * (i + 1);
                 canvas.drawLine(startHorizontalLineX, startHorizontalLineY, startHorizontalLineX + horizontalLineLength, startHorizontalLineY, mPaint);
+                // 画节点
                 E2ENode e2ENode = rightNodes.get(i);
                 measureNode(e2ENode);
                 e2ENode.setX(startHorizontalLineX + horizontalLineLength);
@@ -301,7 +304,7 @@ public class E2EGplotView extends View {
      *
      * @param parentNode
      * @param canvas
-     * @param maxH
+     * @param maxH       此节点下可分配的最长长度
      */
     private void drawLeftChilds(E2ENode parentNode, Canvas canvas, int maxH) {
         if (parentNode == null || parentNode.getChilds().size() == 0) {
@@ -354,7 +357,7 @@ public class E2EGplotView extends View {
      *
      * @param parentNode
      * @param canvas
-     * @param maxH
+     * @param maxH      此节点下可分配的最长长度
      */
     private void drawRightChilds(E2ENode parentNode, Canvas canvas, int maxH) {
         if (parentNode == null || parentNode.getChilds().size() == 0) {
@@ -403,7 +406,7 @@ public class E2EGplotView extends View {
     }
 
     /**
-     * 计算和保存节点的信息
+     * 计算和保存节点的长和宽以及文字的长和宽的信息
      * 必须设置节点的text(文字信息)
      *
      * @param e2ENode
@@ -511,17 +514,8 @@ public class E2EGplotView extends View {
         Paint.FontMetrics fontMetrics = mPaint.getFontMetrics();
         mPaint.setTextSize(e2ENode.getTextSize());
         canvas.drawText(e2ENode.getText(), e2ENode.getX() + e2ENode.getWidth() / 2 - e2ENode.getTextWidth() / 2, e2ENode.getY() + mainNode.getHeight() / 2 + (fontMetrics.bottom - fontMetrics.top) / 2 - fontMetrics.bottom, mPaint);
-        // 画节点的线
-        //canvas.drawPath(e2ENode.getPath(),mPaint);
     }
 
-//    private void drawNodePoint(E2ENode e2ENode, Canvas canvas) {
-//        E2ENodePoint e2ENodePoint = e2ENode.getE2ENodePoint();
-//        if (e2ENodePoint == null) {
-//            return;
-//        }
-//        canvas.drawCircle(e2ENodePoint.getX(),e2ENodePoint.getY(),e2ENodePoint.getR(),mPaint);
-//    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -530,8 +524,9 @@ public class E2EGplotView extends View {
             int y = (int) event.getY();
             E2ENode nodeClicked = findNodeClicked(x, y);
             if (nodeClicked != null) {
-                if (onE2eNodeItemClicked != null)
+                if (onE2eNodeItemClicked != null) {
                     onE2eNodeItemClicked.onItemClicked(nodeClicked);
+                }
             }
         }
         return super.onTouchEvent(event);
@@ -596,6 +591,77 @@ public class E2EGplotView extends View {
         return null;
     }
 
+    /**
+     * 获得到父节点的连接线
+     *
+     * @param e2ENode
+     * @return
+     */
+    public Path getPathToParent(E2ENode e2ENode) {
+        if (e2ENode.getParent() == null)
+            return null;
+        Path path = new Path();
+        switch (e2ENode.getType()) {
+            case E2ENode.TYPE_BOTTOM: {
+                int nodeX = e2ENode.getX() + e2ENode.getWidth() / 2;
+                int nodeY = e2ENode.getY();
+                int parentX = e2ENode.getParent().getX() + e2ENode.getParent().getWidth() / 2;
+                int parentY = e2ENode.getParent().getY() + e2ENode.getParent().getHeight();
+                if (e2ENode.getParent().getChilds().size() == 1) {
+                    // 父节点只有一个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(parentX, parentY);
+                } else {
+                    // 父节点有多个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(nodeX, nodeY - verticalLineLength);
+                    path.lineTo(parentX, nodeY - verticalLineLength);
+                    path.lineTo(parentX, parentY);
+                }
+                break;
+            }
+            case E2ENode.TYPE_LEFT: {
+                int nodeX = e2ENode.getX() + e2ENode.getWidth();
+                int nodeY = e2ENode.getY() + e2ENode.getHeight() / 2;
+                int parentX = e2ENode.getParent().getX();
+                int parentY = e2ENode.getParent().getY() - e2ENode.getParent().getHeight() / 2;
+                if (e2ENode.getParent().getChilds().size() == 1) {
+                    // 父节点只有一个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(parentX, parentY);
+                } else {
+                    // 父节点有多个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(nodeX + horizontalLineLength, nodeY);
+                    path.lineTo(nodeX + horizontalLineLength, parentY);
+                    path.lineTo(parentX, parentY);
+                }
+                break;
+            }
+            case E2ENode.TYPE_RIGHT: {
+                int nodeX = e2ENode.getX();
+                int nodeY = e2ENode.getY() + e2ENode.getHeight() / 2;
+                int parentX = e2ENode.getParent().getX() + e2ENode.getParent().getWidth();
+                int parentY = e2ENode.getParent().getY() - e2ENode.getParent().getHeight() / 2;
+                if (e2ENode.getParent().getChilds().size() == 1) {
+                    // 父节点只有一个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(parentX, parentY);
+                } else {
+                    // 父节点有多个子节点
+                    path.moveTo(nodeX, nodeY);
+                    path.lineTo(nodeX - horizontalLineLength, nodeY);
+                    path.lineTo(nodeX + horizontalLineLength, parentY);
+                    path.lineTo(parentX, parentY);
+                }
+                break;
+            }
+            default:
+                break;
+        }
+        return path;
+    }
+
     // ===============================对外设置参数api============================================
 
 
@@ -636,6 +702,7 @@ public class E2EGplotView extends View {
     public void setOnE2eNodeItemClicked(OnE2eNodeItemClicked onE2eNodeItemClicked) {
         this.onE2eNodeItemClicked = onE2eNodeItemClicked;
     }
+
 
     /**
      * 测试打印日志
