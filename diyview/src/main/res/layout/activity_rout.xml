@@ -7,9 +7,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.example.diyview.customview.iserverrouteview.IserverRouteView
-        android:id="@+id/iserver_route_view"
+    <!--<com.example.diyview.customview.iserverrouteview.IserverRouteView-->
+        <!--android:id="@+id/iserver_route_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="400dp" />-->
+
+    <com.example.diyview.customview.iserverrouteview2.IserverTvRouteView
+        android:id="@+id/iserver_tv_route_view"
         android:layout_width="match_parent"
+        android:background="@android:color/white"
         android:layout_height="400dp" />
 
     <TextView
