@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="取消动画" />
 
-    <com.example.diyview.customview.e2eglotview2.E2ETvGplotView
+    <com.example.diyview.customview.e2egplotview2.E2ETvGplotView
         android:id="@+id/e2eview2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

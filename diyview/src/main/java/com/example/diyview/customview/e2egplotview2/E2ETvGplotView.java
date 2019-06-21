@@ -1,4 +1,4 @@
-package com.example.diyview.customview.e2eglotview2;
+package com.example.diyview.customview.e2egplotview2;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;

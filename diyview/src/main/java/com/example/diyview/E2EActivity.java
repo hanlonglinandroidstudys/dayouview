@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.diyview.customview.e2eglotview2.E2ETvGplotView;
-import com.example.diyview.customview.e2eglotview2.OnTvNodeItemClickListener;
-import com.example.diyview.customview.e2eglotview2.TvNode;
+import com.example.diyview.customview.e2egplotview2.E2ETvGplotView;
+import com.example.diyview.customview.e2egplotview2.OnTvNodeItemClickListener;
+import com.example.diyview.customview.e2egplotview2.TvNode;
 import com.example.diyview.customview.e2egplotview.E2EGplotView;
 import com.example.diyview.customview.e2egplotview.E2ENode;
 import com.example.diyview.customview.e2egplotview.OnE2eNodeItemClicked;

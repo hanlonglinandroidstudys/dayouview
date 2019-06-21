@@ -1,11 +1,8 @@
-package com.example.diyview.customview.e2eglotview2;
+package com.example.diyview.customview.e2egplotview2;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
