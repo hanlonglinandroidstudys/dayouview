@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_routeview:
                 go(RoutActivity.class);
                 break;
+            case R.id.btn_networkview:
+                go(NetworkViewActivity.class);
+                break;
         }
     }
 

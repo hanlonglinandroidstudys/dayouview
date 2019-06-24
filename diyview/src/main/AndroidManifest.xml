@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity android:name=".NetworkViewActivity"></activity>-->
-        <!-- <activity android:name=".MenuTestActivity"></activity> -->
+        <activity android:name=".NetworkViewActivity"></activity>
+         <activity android:name=".MenuTestActivity"></activity>
         <activity android:name=".RoutActivity" />
         <activity android:name=".E2EActivity" />
-        <activity android:name=".NetworkViewActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
